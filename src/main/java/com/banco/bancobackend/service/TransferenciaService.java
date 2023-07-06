@@ -21,6 +21,13 @@ public class TransferenciaService {
 		return (ArrayList<Transferencia>) this.transferenciaRepository.findAll();
 	}
 	
+	public ArrayList<Transferencia> buscarTransferenciaPorOrdenante(Integer id){
+		return this.transferenciaRepository.findByOrigenId(id);
+	}
+	
+	public ArrayList<Transferencia> buscarTransferenciaPorDestino(Integer id){
+		return this.transferenciaRepository.findByDestinoId(id);}
+	
 	public Optional<Transferencia> leerTransferenciaPorId(Integer id){
 		return this.transferenciaRepository.findById(id);
 	}
@@ -39,6 +46,11 @@ public class TransferenciaService {
 		Double saldoOrdenante = ordenante.getSaldo();
 		
 		ordenante.setSaldo(saldoOrdenante-importe);
+		
+		Cliente beneficiario = transferencia.getDestino();
+		
+		clienteService.guardarClienteSinActualizarPassword(ordenante);
+		clienteService.guardarClienteSinActualizarPassword(beneficiario);
 		
 		return transferencia;
 	}

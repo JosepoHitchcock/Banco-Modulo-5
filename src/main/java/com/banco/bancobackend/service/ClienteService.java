@@ -38,6 +38,20 @@ public class ClienteService {
 		}
 		return this.clienteRepository.save(cliente);
 	}
+	private String obtenerPasswordActual(Cliente cliente) {
+		Cliente clienteGuardado = leerClientePorId(cliente.getId()).orElse(null);
+		if (clienteGuardado !=null) {
+			return clienteGuardado.getPassword();
+		}
+		return null;
+		
+	}
+	
+	public Cliente guardarClienteSinActualizarPassword(Cliente cliente) {
+		String passGuardada= obtenerPasswordActual(cliente);
+		cliente.setPassword(passGuardada);
+		return this.clienteRepository.save(cliente);
+	}
 	
 	public void borrarCliente(Integer id) {
 		this.clienteRepository.deleteById(id);
